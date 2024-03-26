@@ -1,22 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:td2_2223/models/task.dart';
 
-class Ecran1 extends StatelessWidget{
-  List<Task> tasks = Task.generateTask(50);
-  String tags='';
+class Ecran1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: tasks.length,
-        itemBuilder:(context,index)=>Card(
-          elevation: 6,
-          margin: const EdgeInsets.all(10),
-          child: ListTile(
-            leading: CircleAvatar(child: Text(tasks[index].id.toString()),backgroundColor: Colors.lightBlue,),
-            title: Text(tasks[index].title),
-            subtitle: Text(tasks[index].tags.join(" ")),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'Morpion',
+            style: TextStyle(fontSize: 100.0, fontWeight: FontWeight.bold),
           ),
-        ));
+          const SizedBox(height: 10.0),
+          ElevatedButton(
+            onPressed: () {
+              // Action à effectuer lors du clic sur le bouton "Play"
+            },
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+              ),
+              textStyle: MaterialStateProperty.all<TextStyle>(
+                const TextStyle(fontSize: 45.0),
+              ),
+            ),
+            child: const Text('Play'),
+          ),
+        ],
+      ),
+    );
   }
-
 }
