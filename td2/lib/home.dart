@@ -3,6 +3,7 @@ import 'package:td2_2223/EcranSettings.dart';
 import 'package:td2_2223/card1.dart';
 import 'package:td2_2223/card2.dart';
 import 'package:td2_2223/card3.dart';
+import 'package:td2_2223/cardMorpion.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -15,10 +16,11 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
+
   static List<Widget> vues = <Widget>[
     Ecran1(),
     Ecran2(),
-    Ecran3(),
+    EcranMorpion(),
     EcranSettings(),
   ];
 
