@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
 
 
   static List<Widget> vues = <Widget>[
-    Ecran1(),
+    Card1(),
     Ecran2(),
     EcranMorpion(),
     EcranSettings(),
