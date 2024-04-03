@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class EcranMorpion extends StatefulWidget {
   @override
@@ -27,9 +28,37 @@ class _GamePageState extends State<EcranMorpion> {
         _currentPlayer = _currentPlayer == 'X' ? 'O' : 'X';
         if (_checkWinner() != "false") {
           _showWinnerDialog();
+
         }
+        else{
+          jouerBot();
+
+        }
+
       });
+
     }
+
+  }
+  void jouerBot(){
+    setState(() {
+      Random random = Random();
+      List<int> indices = [];
+      for (int i = 0; i < _board.length; i++) {
+        if (_board[i] == '') {
+          indices.add(i);
+        }
+      }
+      int ind = random.nextInt(indices.length);
+
+      _board[indices[ind]] = _currentPlayer;
+      _currentPlayer = _currentPlayer == 'X' ? 'O' : 'X';
+
+      if (_checkWinner() != "false") {
+        _showWinnerDialog();
+
+      }
+    });
   }
 
   void _showWinnerDialog() {
