@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class EcranMorpion extends StatefulWidget {
@@ -26,19 +25,22 @@ class _GamePageState extends State<EcranMorpion> {
       setState(() {
         _board[index] = _currentPlayer;
         _currentPlayer = _currentPlayer == 'X' ? 'O' : 'X';
-        if(_checkWinner() != "false"){
+        if (_checkWinner() != "false") {
           _showWinnerDialog();
         }
       });
     }
   }
+
   void _showWinnerDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Partie terminée"),
-          content: Text("Le joueur $_currentPlayer a gagné !"),
+          title: Text("Partie terminÃ©e"),
+          content: Text("Le joueur " +
+              (_currentPlayer == 'X' ? 'O' : 'X') +
+              " a gagnÃ© !"),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -54,34 +56,30 @@ class _GamePageState extends State<EcranMorpion> {
   }
 
   String _checkWinner() {
-    // Vérification des lignes
+    // VÃ©rification des lignes
     for (int i = 0; i < 3; i++) {
       if (_board[i * 3] != '' &&
           _board[i * 3] == _board[i * 3 + 1] &&
           _board[i * 3 + 1] == _board[i * 3 + 2]) {
-        return _board[i * 3] +" Winner";
+        return _board[i * 3] + " Winner";
       }
     }
 
-    // Vérification des colonnes
+    // VÃ©rification des colonnes
     for (int i = 0; i < 3; i++) {
       if (_board[i] != '' &&
           _board[i] == _board[i + 3] &&
           _board[i + 3] == _board[i + 6]) {
-        return _board[i] +" Winner";
+        return _board[i] + " Winner";
       }
     }
 
-    // Vérification des diagonales
-    if (_board[0] != '' &&
-        _board[0] == _board[4] &&
-        _board[4] == _board[8]) {
-      return _board[4] +" Winner";
+    // VÃ©rification des diagonales
+    if (_board[0] != '' && _board[0] == _board[4] && _board[4] == _board[8]) {
+      return _board[4] + " Winner";
     }
-    if (_board[2] != '' &&
-        _board[2] == _board[4] &&
-        _board[4] == _board[6]) {
-      return _board[4] +" Winner";
+    if (_board[2] != '' && _board[2] == _board[4] && _board[4] == _board[6]) {
+      return _board[4] + " Winner";
     }
 
     return "false";

@@ -4,9 +4,15 @@ import 'package:td2_2223/card1.dart';
 import 'package:td2_2223/card2.dart';
 import 'package:td2_2223/card3.dart';
 import 'package:td2_2223/cardMorpion.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
+
+  Future<SharedPreferences> getSharedPreference() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs;
+  }
 
   @override
   // ignore: library_private_types_in_public_api
@@ -16,11 +22,10 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
-
   static List<Widget> vues = <Widget>[
     Card1(),
     Ecran2(),
-    EcranMorpion(),
+    Ecran3(),
     EcranSettings(),
   ];
 
