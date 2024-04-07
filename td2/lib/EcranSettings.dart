@@ -1,6 +1,7 @@
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:td2_2223/mytheme.dart';
+import 'package:td2_2223/home.dart';
 
 class EcranSettings extends StatefulWidget {
   @override
@@ -18,7 +19,21 @@ class _EcranSettingsState extends State<EcranSettings> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Scaffold(
+    appBar: AppBar(
+                    title: const Text('Retourner au menu'),
+                    leading: IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Home()),
+                          (route) => false,
+                        );
+                      },
+                    ),
+                  ),
+    body: Center(
       child: SettingsList(
         darkTheme: SettingsThemeData(
           settingsListBackground: MyTheme.dark().scaffoldBackgroundColor,
@@ -42,7 +57,7 @@ class _EcranSettingsState extends State<EcranSettings> {
           )
         ],
       ),
-    );
+    ));
   }
 }
 

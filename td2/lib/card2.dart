@@ -1,28 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:td2_2223/api/myapi.dart';
 import 'package:td2_2223/home.dart';
+import 'package:td2_2223/models/settingModel.dart';
+import 'package:provider/provider.dart';
 
 class Ecran2 extends StatelessWidget {
-  final MyAPI myApi = MyAPI();
-
-
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
-              'Historique des parties',
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-            ),
-          ),
-          // Ajoutez d'autres widgets ici pour afficher l'historique des parties
-        ],
-      ),
+    return Scaffold(
+    appBar: AppBar(
+                title: const Text('Retourner au menu'),
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Home()),
+                      (route) => false,
+                    );
+                  },
+                ),
+              ),
+      body:
+        ListView.builder(
+          itemCount: context.read<SettingViewModel>().score.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text(context.read<SettingViewModel>().score[context.read<SettingViewModel>().score.length - index - 1]),
+            );
+          },
+        ),
     );
   }
 }

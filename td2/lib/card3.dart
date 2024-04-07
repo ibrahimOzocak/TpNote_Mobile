@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:td2_2223/home.dart';
 
 class Ecran3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+
+        appBar: AppBar(
+                    title: const Text('Retourner au menu'),
+                    leading: IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Home()),
+                          (route) => false,
+                        );
+                      },
+                    ),
+                  ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
         child: Column(

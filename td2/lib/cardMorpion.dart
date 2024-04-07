@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-
+import 'package:td2_2223/card1.dart';
+import 'package:td2_2223/models/settingModel.dart';
+import 'package:provider/provider.dart';
 class EcranMorpion extends StatefulWidget {
   @override
   _GamePageState createState() => _GamePageState();
@@ -9,6 +11,8 @@ class EcranMorpion extends StatefulWidget {
 class _GamePageState extends State<EcranMorpion> {
   var _board;
   var _currentPlayer;
+  int _index = 0;
+  bool partieFini = false;
 
   @override
   void initState() {
@@ -22,24 +26,24 @@ class _GamePageState extends State<EcranMorpion> {
   }
 
   void _onTileClicked(int index) {
-    if (_board[index] == '') {
-      setState(() {
-        _board[index] = _currentPlayer;
-        _currentPlayer = _currentPlayer == 'X' ? 'O' : 'X';
-        if (_checkWinner() != "false") {
-          _showWinnerDialog();
-
-        }
-        else{
-          jouerBot();
-
-        }
-
-      });
-
-    }
-
+  if(!partieFini){
+      if (_board[index] == '') {
+            setState(() {
+              _board[index] = _currentPlayer;
+              _currentPlayer = _currentPlayer == 'X' ? 'BOT' : 'X';
+              if (_checkWinner() != "false") {
+                  partieFini = true;
+                _showWinnerDialog();
+              }
+              else{
+                jouerBot();
+              }
+            });
+          }
+      }
   }
+
+
   void jouerBot(){
     setState(() {
       Random random = Random();
@@ -49,15 +53,22 @@ class _GamePageState extends State<EcranMorpion> {
           indices.add(i);
         }
       }
-      int ind = random.nextInt(indices.length);
-
+      int ind = 0;
+      if(indices.length == 0 ){
+        partieFini = true;
+        _showEqualDialog();
+        return;
+      }else{
+        ind = random.nextInt(indices.length);
+      }
       _board[indices[ind]] = _currentPlayer;
-      _currentPlayer = _currentPlayer == 'X' ? 'O' : 'X';
+      _currentPlayer = _currentPlayer == 'X' ? 'BOT' : 'X';
 
       if (_checkWinner() != "false") {
+        partieFini = true;
         _showWinnerDialog();
-
       }
+
     });
   }
 
@@ -66,25 +77,29 @@ class _GamePageState extends State<EcranMorpion> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Partie terminÃ©e"),
+          title: Text("Partie terminé"),
           content: Text("Le joueur " +
-              (_currentPlayer == 'X' ? 'O' : 'X') +
-              " a gagnÃ© !"),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _initializeBoard();
-              },
-              child: Text("Nouvelle partie"),
-            ),
-          ],
+              (_currentPlayer == 'X' ? 'BOT' : 'X') +
+              " a gagné !"),
         );
       },
     );
+
   }
+  void _showEqualDialog() {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Partie terminé"),
+            content: Text("égalité"),
+          );
+        },
+      );
+    }
 
   String _checkWinner() {
+
     // VÃ©rification des lignes
     for (int i = 0; i < 3; i++) {
       if (_board[i * 3] != '' &&
@@ -113,13 +128,64 @@ class _GamePageState extends State<EcranMorpion> {
 
     return "false";
   }
+  void _restartGame(int ind){
+      if(ind == 0){
+        Navigator.pushAndRemoveUntil(
+             context,
+             MaterialPageRoute(builder: (context) => EcranMorpion()),
+             (route) => false,
+          );
+      }
+      else{
+        if(partieFini){
+            if(_checkWinner() == "false"){
+                context.read<SettingViewModel>().addScore(
+                    context.read<SettingViewModel>().pseudos,
+                    "égalité"
+                );
+            }
+            else{
+                context.read<SettingViewModel>().addScore(
+                    context.read<SettingViewModel>().pseudos,
+                    _currentPlayer == 'BOT' ? "Gagné" : "Perdue"
+                );
+            }
+        }
+      }
 
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tic Tac Toe'),
+        title: Text( "joueur : " + context.read<SettingViewModel>().pseudos),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Card1()),
+                );
+            },
+          ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+              selectedItemColor: Colors.grey,
+              unselectedItemColor: Colors.grey,
+              currentIndex: _index,
+              onTap: _restartGame,
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.article),
+                  label: 'Nouvelle partie',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.article),
+                  label: 'Sauvegarder les scores',
+                ),
+
+              ],
+            ),
       body: GridView.builder(
         padding: EdgeInsets.all(20.0),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
